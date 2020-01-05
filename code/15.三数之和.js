@@ -1,57 +1,47 @@
 /**
  * @param {number[]} nums
  * @return {number[][]}
+ * 使用深度搜索会超时，这道题目主要难点在于去重，所以重开始考虑，遇到相同的跳过
  */
-const res = [];
 var threeSum = function(nums) {
+    let res = [];
     nums.sort((a, b) => {
         return a - b;
     })
     let n = nums.length;
-    dfs(0, [], nums, n)    
+    if (n < 3)
+        return [];
+    for (let i = 0; i < n; i++) {
+        if (nums[i] > 0)
+            return res;
+        if (i > 0 && nums[i] === nums[i - 1])
+            continue;
+        let L = i + 1;
+        let R = n - 1;
+        while (L < R) {
+            let sum = parseInt(nums[i]) +  parseInt(nums[L]) + parseInt(nums[R]);
+            if (sum === 0) {
+                let tmp = [nums[i], nums[L], nums[R]];
+                res.push(tmp);
+                while ((L < R) && (nums[L] === nums[L + 1]))
+                    L = L + 1;
+                while ((L < R) && (nums[R] === nums[R - 1]))
+                    R = R - 1;
+                L = L + 1;
+                R = R - 1
+            }
+            else if (sum > 0) {
+                R = R - 1;
+            }
+            else {
+                L = L + 1;
+            }
+        }
+        
+    }
     return res;
 };
 
-function dfs(start, temp, nums, n,) {
-    if (temp.length === 3) {
-        let x = [...temp]
-        let flag = true;
-        for (let j = 0; j < res.length; j++) {
-            if(isEquar(res[j], temp)) {
-                flag = false;
-                break;
-            }
-        }
-        if (sum(temp) === 0 && flag) {
-            res.push(x)
-        }
-    }else {
-        for (let i = start; i < n; i++) {
-            temp.push(nums[i]);
-            dfs(i + 1, temp, nums, n);
-            temp.pop();
-        }
-    }
-}
-
-function isEquar(a, b) {
-    // 判断数组的长度
-    if (a.length !== b.length) {
-        return false
-    } else {
-        // 循环遍历数组的值进行比较
-        for (let i = 0; i < a.length; i++) {
-            if (a[i] !== b[i]) {
-                return false
-            }
-        }
-        return true;
-    }
-}
-
-function sum(arr) {
-    return eval(arr.join("+"));
-}
 
 let nums = [-1, 0, 1, 2, -1, -4];
 console.log(threeSum(nums))
