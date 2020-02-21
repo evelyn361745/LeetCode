@@ -9,7 +9,7 @@ function multiply(array)
     let B = [];
     for (let i = 0; i < array.length; i++) {
         let tmp1 = array.slice(0, i);
-        let tmp2 = array.slice(i + 1, array.length - 1)
+        let tmp2 = array.slice(i + 1, array.length)
         let t = mu(tmp1) * mu(tmp2);
         B.push(t)
     }
@@ -17,7 +17,14 @@ function multiply(array)
 }
 
     function mu(array) {
-        return array.reduce(function(a, b) {
-            return a * b;
-        })
+        if (array.length === 0) {
+            return 1;
+        }else {
+            return array.reduce(function(a, b) {
+                return a * b;
+            })
+        }
     }
+
+    let A = [0,1,2,3,4]
+    console.log(multiply(A))
